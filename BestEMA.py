@@ -89,8 +89,8 @@ class EmaCross(Strategy):
             #     or
             #     self.position.is_short and
             #     crossover(self.data.Close, self.sma_exit)):
-                
-            self.position.close()
+            if slowMA > fastMA:   
+                self.position.close()
             
 
 
