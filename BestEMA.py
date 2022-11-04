@@ -177,7 +177,7 @@ def runBackTest(coinPair):
     else:
         print("linha=",linha[0])
         # update linha
-        coinpairBestEma.loc[linha[0],['slowEMA','fastEMA','returnPerc','BuyHoldReturnPerc']] = [n1, n2, returnPerc,BuyHoldReturnPerc]
+        coinpairBestEma.loc[linha[0],['fastEMA','slowEMA','returnPerc','BuyHoldReturnPerc']] = [n1, n2, returnPerc,BuyHoldReturnPerc]
 
     # coinpairBestEma
     print("Saving Coin Pair to csv")
