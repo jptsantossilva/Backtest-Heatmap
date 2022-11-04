@@ -62,17 +62,36 @@ class EmaCross(Strategy):
         fastMA = self.ma1[-1]
         slowMA = self.ma2[-1]
 
-        # If sma1 crosses above sma2, close any existing
-        # short trades, and buy the asset
-        if fastMA > slowMA:
+        if not self.position:
+            
+            # On upwards trend, if price closes above
+            # "entry" MA, go long
+            
+            # Here, even though the operands are arrays, this
+            # works by implicitly comparing the two last values
+            if fastMA > slowMA:
+                # if crossover(self.data.Close, self.sma_enter):
+                self.buy()
+                    
+            # On downwards trend, if price closes below
+            # "entry" MA, go short
+            
+            # else:
+            #     if crossover(self.sma_enter, self.data.Close):
+            #         self.sell()
+        
+        # But if we already hold a position and the price
+        # closes back below (above) "exit" MA, close the position
+        
+        else:
+            # if (self.position.is_long and
+            #     crossover(self.sma_exit, self.data.Close)
+            #     or
+            #     self.position.is_short and
+            #     crossover(self.data.Close, self.sma_exit)):
+                
             self.position.close()
-            self.buy()
-
-        # Else, if sma1 crosses below sma2, close any existing
-        # long trades, and sell the asset
-        elif slowMA > fastMA:
-            self.position.close()
-            self.sell()
+            
 
 
 # %%
