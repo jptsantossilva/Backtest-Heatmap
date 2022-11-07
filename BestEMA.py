@@ -6,7 +6,8 @@ import pandas as pd
 import datetime as dt
 from backtesting import Backtest
 from backtesting import Strategy
-from backtesting.lib import crossover
+import sys
+ 
 
 # %%
 # Binance API
@@ -18,8 +19,23 @@ api_secret = os.environ.get('binance_secret')
 client = Client(api_key, api_secret)
 
 # %%
+
+
 startdate = "10 Nov, 2018 UTC"
 timeframe = "1d"
+
+# Check the program has been called with the timeframe
+# total arguments
+n = len(sys.argv)
+# print("Total arguments passed:", n)
+if n < 2:
+    print("Argument is missing")
+    timeframe = input('Enter timeframe (1d, 4h or 1h):')
+else:
+    # argv[0] in Python is always the name of the script.
+    timeframe = sys.argv[1]
+
+
     
 # coinPair = "BTCBUSD"
 
@@ -61,6 +77,7 @@ class EmaCross(Strategy):
 
         fastMA = self.ma1[-1]
         slowMA = self.ma2[-1]
+        priceClose = self.data.Close[-1]
 
         if not self.position:
             
@@ -69,7 +86,7 @@ class EmaCross(Strategy):
             
             # Here, even though the operands are arrays, this
             # works by implicitly comparing the two last values
-            if fastMA > slowMA:
+            if (priceClose > fastMA) and (fastMA > slowMA):
                 # if crossover(self.data.Close, self.sma_enter):
                 self.buy()
                     
@@ -195,7 +212,7 @@ def runBackTest(coinPair):
 Listcoinpair = pd.read_csv('positioncheck')
 # get coin pairs only
 Listcoinpair = Listcoinpair.Currency
-Listcoinpair
+# Listcoinpair
 
 # %%
 # run backtest for each coin pair
